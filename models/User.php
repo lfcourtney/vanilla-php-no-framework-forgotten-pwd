@@ -10,7 +10,7 @@ class User {
     }
 
     //Find user by email or username
-    public function findUserByEmailOrPassword($email, $username){
+    public function findUserByEmailOrUsername($email, $username){
         $this->db->query('SELECT * FROM users WHERE usersUid = :username OR usersEmail = :email');
         $this->db->bind(':username', $username);
         $this->db->bind(':email', $email);

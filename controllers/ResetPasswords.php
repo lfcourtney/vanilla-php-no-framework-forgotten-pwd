@@ -111,7 +111,7 @@ use PHPMailer\PHPMailer\PHPMailer;
             }
 
             $tokenEmail = $row->pwdResetEmail;
-            if(!$this->userModel->findUserByEmailOrPassword($tokenEmail, $tokenEmail)){
+            if(!$this->userModel->findUserByEmailOrUsername($tokenEmail, $tokenEmail)){
                 flash("newReset", "There was an error");
                 redirect($url);
             }

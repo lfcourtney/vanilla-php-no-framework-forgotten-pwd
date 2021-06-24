@@ -52,7 +52,7 @@
             }
 
             //User with the same email or password already exists
-            if($this->userModel->findUserByEmailOrPassword($data['usersEmail'], $data['usersName'])){
+            if($this->userModel->findUserByEmailOrUsername($data['usersEmail'], $data['usersName'])){
                 flash("register", "Username or email already taken");
                 redirect("../signup.php");
             }
@@ -86,7 +86,7 @@
         }
 
         //Check for user/email
-        if($this->userModel->findUserByEmailOrPassword($data['name/email'], $data['name/email'])){
+        if($this->userModel->findUserByEmailOrUsername($data['name/email'], $data['name/email'])){
             //User Found
             $loggedInUser = $this->userModel->login($data['name/email'], $data['usersPwd']);
             if($loggedInUser){
