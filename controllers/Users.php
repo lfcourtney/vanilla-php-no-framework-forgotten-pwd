@@ -129,6 +129,8 @@
             case 'login':
                 $init->login();
                 break;
+            default:
+            redirect("../index.php");
         }
         
     }else{

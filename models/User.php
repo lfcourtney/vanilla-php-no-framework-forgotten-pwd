@@ -45,11 +45,9 @@ class User {
 
     //Login user
     public function login($nameOrEmail, $password){
-        $this->db->query('SELECT * FROM users WHERE usersUid = :username OR usersEmail = :email');
-        $this->db->bind(':username', $nameOrEmail);
-        $this->db->bind(':email', $nameOrEmail);
+        $row = $this->findUserByEmailOrUsername($nameOrEmail, $nameOrEmail);
 
-        $row = $this->db->single();
+        if($row == false) return false;
 
         $hashedPassword = $row->usersPwd;
         if(password_verify($password, $hashedPassword)){
