@@ -4,16 +4,17 @@
  */
 
 class Database {
-	private $host = DB_HOST;
-	private $user = DB_USER;
-	private $pass = DB_PASS;
-	private $dbname = DB_NAME;
+	// Database variables from config
+	private $host     = DB_HOST;
+	private $user     = DB_USER;
+	private $pass     = DB_PASS;
+	private $dbname   = DB_NAME;
 
-// Database handler variable
+	 // Database handler variable
 	 private $dbh;
-// query statement variable
-    private $stmt;
-// Error handler variable
+         // query statement variable
+    	 private $stmt;
+	 // Error handler variable
 	 private $error;
 
     public function __construct(){
