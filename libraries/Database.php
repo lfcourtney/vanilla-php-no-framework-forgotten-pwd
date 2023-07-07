@@ -1,45 +1,47 @@
 <?php
-/*
-    * PDO Database Class
-    * Connect to database
-    * Create prepared statements
-    * Bind values
-    * Return rows and results
-*/
-class Database {
-    private $host = 'localhost';
-    private $user = 'root';
-    private $pass = '123456';
-    private $dbname = 'login-system';
+/**
+ * 
+ */
 
-    //Will be the PDO object
-    private $dbh;
+class Database {
+	private $host = DB_HOST;
+	private $user = DB_USER;
+	private $pass = DB_PASS;
+	private $dbname = DB_NAME;
+
+// Database handler variable
+	 private $dbh;
+// query statement variable
     private $stmt;
-    private $error;
+// Error handler variable
+	 private $error;
 
     public function __construct(){
-        //Set DSN
+        // Set Database Source Name
         $dsn = 'mysql:host='.$this->host.';dbname='.$this->dbname;
+        // Set options
+	     // Persistent database connections can increase performance by checking to see if there is already an established connection to the database
+	     // Throw an exception if an error occurs. This then allows you to handle the error gracefully.
         $options = array(
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
         );
 
-        //Create PDO instance
+        // Create PDO instance
         try{
             $this->dbh = new PDO($dsn, $this->user, $this->pass, $options);
         }catch(PDOException $e){
             $this->error = $e->getMessage();
-            echo $this->error;
+            //echo $this->error;
         }
     }
 
-    //Prepare statement with query
+    //prepare SQL statement
     public function query($sql){
         $this->stmt = $this->dbh->prepare($sql);
     }
 
-    //Bind values, to prepared statement using named parameters
+    // Bind values, to prepared statement using named parameters
     public function bind($param, $value, $type = null){
         if(is_null($type)){
             switch(true){
@@ -56,28 +58,34 @@ class Database {
                     $type = PDO::PARAM_STR;
             }
         }
+        // Run PDO bindValue
         $this->stmt->bindValue($param, $value, $type);
     }
 
-    //Execute the prepared statement
+    // Execute the prepared statement
     public function execute(){
         return $this->stmt->execute();
     }
 
-    //Return multiple records
+    // Return multiple records as object array
     public function resultSet(){
         $this->execute();
         return $this->stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
-    //Return a single record
+    // Return a single record
     public function single(){
         $this->execute();
         return $this->stmt->fetch(PDO::FETCH_OBJ);
     }
 
-    //Get row count
+    // Return row count
     public function rowCount(){
         return $this->stmt->rowCount();
     }
+
+    // Return the last inserted Id as a string
+	  public function lastInsertId(){
+		  return $this->dbh->lastInsertId();
+	  }
 }
