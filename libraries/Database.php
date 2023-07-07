@@ -10,19 +10,19 @@ class Database {
 	private $pass     = DB_PASS;
 	private $dbname   = DB_NAME;
 
-	 // Database handler variable
-	 private $dbh;
-         // query statement variable
-    	 private $stmt;
-	 // Error handler variable
-	 private $error;
+    // Database handler variable
+    private $dbh;
+    // query statement variable
+    private $stmt;
+    // Error handler variable
+    private $error;
 
     public function __construct(){
         // Set Database Source Name
         $dsn = 'mysql:host='.$this->host.';dbname='.$this->dbname;
         // Set options
-	     // Persistent database connections can increase performance by checking to see if there is already an established connection to the database
-	     // Throw an exception if an error occurs. This then allows you to handle the error gracefully.
+        // Persistent database connections can increase performance by checking to see if there is already an established connection to the database
+        // Throw an exception if an error occurs. This then allows you to handle the error gracefully.
         $options = array(
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
@@ -68,6 +68,10 @@ class Database {
         return $this->stmt->execute();
     }
 
+    /**
+     * Set returns
+     */
+    
     // Return multiple records as object array
     public function resultSet(){
         $this->execute();
@@ -89,4 +93,31 @@ class Database {
 	  public function lastInsertId(){
 		  return $this->dbh->lastInsertId();
 	  }
-}
+
+    /**
+     * Set Transactions
+     * 
+     * allows multiple changes to a database all in one batch to avoid 'interuption' errors
+     */
+
+    //begin a transaction
+    public function beginTransaction(){
+        return $this->dbh->beginTransaction();
+    }
+    //end a transaction (commit changes)
+    public function endTransaction(){
+        return $this->dbh->commit();
+    }
+    //cancel a transaction (roll back changes)
+    public function cancelTransaction(){
+        return $this->dbh->rollBack();
+    }
+    //Debug (dump the information that was contained in the Prepared Statement)
+    public function debugDumpParams(){
+        return $this->stmt->debugDumpParams();
+    }
+
+}//end class
+
+// Instantiate database (here or on page e.g.tutorial.php
+//$database = new Database(); needs to be global here?
